@@ -1,0 +1,5 @@
+application=nebula
+keystore_file=privateKeys.store
+alias=nebulakey
+keystore_password=threathunter319
+key_password=threathunter319

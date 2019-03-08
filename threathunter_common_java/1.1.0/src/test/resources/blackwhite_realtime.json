@@ -1,0 +1,191 @@
+[
+  {
+    "module": "base",
+    "app": "nebula",
+    "name": "HTTP_DYNAMIC",
+    "remark": "动态资源请求",
+    "visible_name": "动态资源请求",
+    "dimension": "",
+    "status": "enable",
+    "type": "event",
+    "value_type": "",
+    "value_subtype": "",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "filter": {},
+    "period": {},
+    "function": {},
+    "groupbykeys": [],
+    "hint": {}
+  },
+  {
+    "module": "realtime",
+    "app": "nebula",
+    "name": "ip__visit_dynamic_count__5m__rt",
+    "remark": "单个IP5分钟动态资源访问量总和",
+    "visible_name": "IP动态资源请求量[5m]",
+    "dimension": "ip",
+    "status": "enable",
+    "type": "aggregate",
+    "value_type": "long",
+    "value_subtype": "",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "filter": {},
+    "period": {
+      "type": "last_n_seconds",
+      "value": "300"
+    },
+    "function": {
+      "method": "count",
+      "source": "HTTP_DYNAMIC",
+      "object": "c_ip",
+      "object_type": "string",
+      "object_subtype": "",
+      "param": ""
+    },
+    "groupbykeys": [
+      "c_ip"
+    ],
+    "hint": {}
+  },
+  {
+    "status": "enable",
+    "filter": {},
+    "remark": "是否在黑名单",
+    "name": "__inner__check_black",
+    "hint": {},
+    "value_category": "",
+    "app": "nebula",
+    "period": {},
+    "module": "realtime",
+    "value_type": "boolean",
+    "value_subtype": "",
+    "visible_name": "",
+    "source": [
+    ],
+    "value_type": "boolean",
+    "groupbykeys": [],
+    "function": {},
+    "type": "internal",
+    "dimension": ""
+  },
+  {
+    "status": "enable",
+    "filter": {
+      "type": "and",
+      "condition": [
+        {
+          "object_subtype": "",
+          "object": "c_ip",
+          "object_type": "string",
+          "value": ".",
+          "source": "HTTP_DYNAMIC",
+          "param": "",
+          "operation": "contains",
+          "type": "simple"
+        }
+      ]
+    },
+    "remark": "ip trigger for strategy IP大量访问",
+    "name": "_ip__strategy__1521020686217__4950E5A4A7E9878FE8AEBFE997AE__trigger__rt",
+    "hint": {},
+    "value_category": "",
+    "app": "nebula",
+    "period": {},
+    "module": "realtime",
+    "value_subtype": "",
+    "visible_name": "ip trigger for strategy IP大量访问",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "value_type": "",
+    "groupbykeys": [
+      "c_ip"
+    ],
+    "function": {},
+    "type": "filter",
+    "dimension": "ip"
+  },
+  {
+    "status": "enable",
+    "filter": {
+      "type": "and",
+      "condition": [
+        {
+          "object_subtype": "",
+          "object": "value",
+          "object_type": "long",
+          "value": "300",
+          "source": "ip__visit_dynamic_count__5m__rt",
+          "param": "",
+          "operation": ">",
+          "type": "simple"
+        },
+        {
+          "object_subtype": "",
+          "object": "value",
+          "object_type": "boolean",
+          "value": "true",
+          "source": "__inner__check_black",
+          "param": "",
+          "operation": "==",
+          "type": "simple"
+        }
+      ]
+    },
+    "remark": "collector for strategy IP大量访问",
+    "name": "_ip__strategy__1521020686217__4950E5A4A7E9878FE8AEBFE997AE__collect__rt",
+    "hint": {},
+    "value_category": "",
+    "app": "nebula",
+    "period": {},
+    "module": "realtime",
+    "value_subtype": "",
+    "visible_name": "collector for strategy IP大量访问",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "_ip__strategy__1521020686217__4950E5A4A7E9878FE8AEBFE997AE__trigger__rt"
+      },
+      {
+        "app": "nebula",
+        "name": "ip__visit_dynamic_count__5m__rt"
+      },
+      {
+        "app": "nebula",
+        "name": "__inner__check_black"
+      }
+    ],
+    "value_type": "",
+    "groupbykeys": [
+      "c_ip"
+    ],
+    "function": {
+      "object_subtype": "",
+      "object": "",
+      "object_type": "",
+      "param": "IP大量访问",
+      "source": "_ip__strategy__1521020686217__4950E5A4A7E9878FE8AEBFE997AE__trigger__rt",
+      "config": {
+        "trigger": "_ip__strategy__1521020686217__4950E5A4A7E9878FE8AEBFE997AE__trigger__rt"
+      },
+      "method": "setblacklist"
+    },
+    "type": "collector",
+    "dimension": "ip"
+  }
+]

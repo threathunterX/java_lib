@@ -16,8 +16,6 @@
         <module>correlation-grabber</module>
         <module>influxdbmigrator</module>
         <module>accumulation</module>
-        <module>license-creator</module>
-        <module>license-validator</module>
         <module>babel-mocker</module>
     </modules>
 

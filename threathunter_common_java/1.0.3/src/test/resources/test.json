@@ -1,0 +1,423 @@
+[
+  {
+    "module": "base",
+    "app": "nebula",
+    "name": "HTTP_DYNAMIC",
+    "remark": "用户访问事件",
+    "visible_name": "",
+    "dimension": "",
+    "status": "enable",
+    "type": "event",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "filter": {},
+    "period": {},
+    "function": {},
+    "groupbykeys": []
+  },
+  {
+    "module": "slot",
+    "app": "nebula",
+    "name": "did__visit_dynamic_count__1h__slot",
+    "remark": "单个设备每小时访问量",
+    "visible_name": "单个设备每小时访问量",
+    "dimension": "did",
+    "status": "enable",
+    "type": "aggregate",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "method": "count",
+      "object": ""
+    },
+    "groupbykeys": [
+      "did"
+    ]
+  },
+  {
+    "app": "nebula",
+    "module": "slot",
+    "name": "uid_did__visit_dynamic_count__1h__slot",
+    "remark": "单个用户每小时每个设备的动态资源访问数量",
+    "visible_name": "",
+    "dimension": "uid",
+    "status": "enable",
+    "type": "aggregate",
+    "value_type": "mmap",
+    "value_subtype": "long",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "source": "HTTP_DYNAMIC",
+      "method": "group_count",
+      "object": "did",
+      "object_type": "string",
+      "object_subtype": ""
+    },
+    "groupbykeys": [
+      "uid"
+    ]
+  },
+  {
+    "app": "nebula",
+    "module": "slot",
+    "name": "uid__visit_dynamic_last_timestamp__1h__slot",
+    "remark": "单个用户每小时最后的访问时间",
+    "visible_name": "",
+    "dimension": "uid",
+    "status": "enable",
+    "type": "aggregate",
+    "value_type": "map",
+    "value_subtype": "long",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "source": "HTTP_DYNAMIC",
+      "method": "last",
+      "object": "timestamp",
+      "object_type": "long",
+      "object_subtype": ""
+    },
+    "groupbykeys": [
+      "uid"
+    ]
+  },
+  {
+    "app": "nebula",
+    "module": "slot",
+    "name": "uid__visit_dynamic_last_ip__1h__slot",
+    "remark": "单个用户每小时最后的访问IP",
+    "visible_name": "",
+    "dimension": "uid",
+    "status": "enable",
+    "type": "aggregate",
+    "value_type": "map",
+    "value_subtype": "string",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "source": "HTTP_DYNAMIC",
+      "method": "last",
+      "object": "c_ip",
+      "object_type": "string",
+      "object_subtype": ""
+    },
+    "groupbykeys": [
+      "uid"
+    ]
+  },
+  {
+    "module": "slot",
+    "app": "nebula",
+    "name": "uid_geo_city__visit_dynamic_count__1h__slot",
+    "remark": "单个用户每小时每个城市的动态资源访问数量",
+    "visible_name": "单个用户每小时每个城市的动态资源访问数量",
+    "status": "enable",
+    "type": "aggregate",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "method": "group_count",
+      "object": "geo_city"
+    },
+    "groupbykeys": [
+      "uid"
+    ]
+  },
+  {
+    "module": "slot",
+    "app": "nebula",
+    "name": "uid_geo_city__visit_dynamic_count_top20__1h__slot",
+    "remark": "单个用户访问的前20的城市",
+    "visible_name": "单个用户访问的前20的城市",
+    "status": "enable",
+    "type": "aggregate",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "uid_geo_city__visit_dynamic_count__1h__slot"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "method": "top",
+      "object": "value",
+      "object_type": "map",
+      "object_subtype": "long",
+      "param": "20"
+    },
+    "groupbykeys": [
+      "uid"
+    ]
+  },
+  {
+    "app": "nebula",
+    "module": "slot",
+    "name": "did__visit_dynamic_count_top100__1h__slot",
+    "remark": "每小时访问量前100的did",
+    "visible_name": "",
+    "dimension": "did",
+    "status": "enable",
+    "type": "aggregate",
+    "value_type": "mmap",
+    "value_subtype": "long",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "did__visit_dynamic_count__1h__slot"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "source": "did__visit_dynamic_count__1h__slot",
+      "method": "top",
+      "object": "value",
+      "object_type": "map",
+      "object_subtype": "long",
+      "param": "100"
+    }
+  },
+  {
+    "app": "nebula",
+    "module": "slot",
+    "name": "did_page__visit_dynamic_count__1h__slot",
+    "remark": "单个设备上每个页面当前小时动态资源访问数",
+    "visible_name": "",
+    "dimension": "did",
+    "status": "enable",
+    "type": "aggregate",
+    "value_type": "mmap",
+    "value_subtype": "long",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "source": "HTTP_DYNAMIC",
+      "method": "group_count",
+      "object": "page",
+      "object_type": "string",
+      "object_subtype": ""
+    },
+    "groupbykeys": [
+      "did"
+    ]
+  },
+  {
+    "app": "nebula",
+    "module": "slot",
+    "name": "did_page__visit_dynamic_count_top20__1h__slot",
+    "remark": "单个设备访问的前20的页面",
+    "visible_name": "",
+    "dimension": "did",
+    "status": "enable",
+    "type": "aggregate",
+    "value_type": "mmap",
+    "value_subtype": "long",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "did_page__visit_dynamic_count__1h__slot"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "source": "did_page__visit_dynamic_count__1h__slot",
+      "method": "top",
+      "object": "value",
+      "object_type": "map",
+      "object_subtype": "long",
+      "param": "20"
+    },
+    "groupbykeys": ["did"]
+  },
+  {
+    "app": "nebula",
+    "module": "slot",
+    "name": "did__visit_dynamic_distinct_count_uid__1h__slot",
+    "remark": "单个设备每小时动态资源关联用户数量",
+    "visible_name": "",
+    "dimension": "did",
+    "status": "enable",
+    "type": "aggregate",
+    "value_type": "map",
+    "value_subtype": "long",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "source": "HTTP_DYNAMIC",
+      "method": "distinct_count",
+      "object": "uid",
+      "object_type": "string",
+      "object_subtype": ""
+    },
+    "groupbykeys": [
+      "did"
+    ]
+  },
+  {
+    "app": "nebula",
+    "module": "slot",
+    "name": "global__visit_dynamic_distinct_count_did__1h__slot",
+    "remark": "本小时动态资源访问设备数量",
+    "visible_name": "",
+    "dimension": "global",
+    "status": "enable",
+    "type": "aggregate",
+    "value_type": "map",
+    "value_subtype": "long",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "source": "HTTP_DYNAMIC",
+      "method": "distinct_count",
+      "object": "did",
+      "object_type": "string",
+      "object_subtype": ""
+    }
+  },
+  {
+    "module": "slot",
+    "app": "nebula",
+    "name": "ip__visit_dynamic_distinct_count_page__1h__slot",
+    "remark": "单个ip本小时动态资源访问关联页面数量",
+    "visible_name": "单个ip本小时动态资源访问关联页面数量",
+    "dimension": "ip",
+    "status": "enable",
+    "type": "aggregate",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "HTTP_DYNAMIC"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "method": "distinct_count",
+      "object": "page"
+    },
+    "groupbykeys": [
+      "c_ip"
+    ]
+  },
+  {
+    "app": "nebula",
+    "module": "slot",
+    "name": "ip__visit_dynamic_distinct_count_page_top100__1h__slot",
+    "remark": "单个ip本小时动态资源访问关联用户数量",
+    "visible_name": "",
+    "dimension": "ip",
+    "status": "enable",
+    "type": "aggregate",
+    "value_type": "mmap",
+    "value_subtype": "long",
+    "value_category": "",
+    "source": [
+      {
+        "app": "nebula",
+        "name": "ip__visit_dynamic_distinct_count_page__1h__slot"
+      }
+    ],
+    "period": {
+      "type": "hourly",
+      "value": "1"
+    },
+    "function": {
+      "source": "ip__visit_dynamic_distinct_count_page__1h__slot",
+      "method": "top",
+      "object": "value",
+      "object_type": "map",
+      "object_subtype": "long",
+      "param": "100"
+    },
+    "groupbykeys": [
+      "c_ip"
+    ]
+  }
+]

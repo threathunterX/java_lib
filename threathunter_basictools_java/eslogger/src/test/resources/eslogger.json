@@ -1,0 +1,12 @@
+{
+  "name": "esloggertest",
+  "delivermode": "shuffle",
+  "callmode": "notify",
+  "serverimpl": "rabbitmq",
+  "coder": "mail",
+  "options": {
+    "durable": true,
+    "sdc":"sh",
+    "cdc":"sh"
+  }
+}

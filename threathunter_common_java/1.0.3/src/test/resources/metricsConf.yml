@@ -1,0 +1,13 @@
+server: redis
+
+influxdb:
+   url: http://172.16.0.104:8086/
+   username: root
+   password: influxdb
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: threathunter.cn
+
+app: fx_test

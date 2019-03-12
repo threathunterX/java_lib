@@ -1,0 +1,8 @@
+es_ip: 172.16.0.104
+es_port: 9300
+es_node_name: threathunter-test-cluster
+es_level: info
+
+disk_metrics_db: monitor
+disk_metrics_name: systemstats.totaldisk
+disk_usage_threshold: 0.8

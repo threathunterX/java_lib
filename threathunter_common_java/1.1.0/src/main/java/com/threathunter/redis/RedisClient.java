@@ -470,7 +470,7 @@ public class RedisClient implements RedisTagCommands, RedisCommands {
 
     @Override
     public List<String> blpop(int timeout, String key) {
-        return execute(jedis -> jedis.blpop(1, key), key);
+        return execute(jedis -> jedis.blpop(timeout, key), key);
     }
 
     @Override

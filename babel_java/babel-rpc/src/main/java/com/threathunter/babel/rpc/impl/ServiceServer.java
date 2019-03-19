@@ -73,6 +73,7 @@ class ServiceServer {
         if (running) {
             return;
         }
+        logger.debug(this.service.getServiceMeta().getName() + " start");
         running = true;
         receiver.startReceiving();
         acceptor = new AcceptorThread(id);

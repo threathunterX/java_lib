@@ -95,7 +95,6 @@ public class RedisServerMailReceiver implements MailReceiver {
             public void run() {
                 while (running) {
                     try {
-                        logger.debug("start consume");
                         startConsume();
                     } catch(Throwable e) {
                         if (e.getClass().equals(InterruptedException.class))
@@ -186,10 +185,12 @@ public class RedisServerMailReceiver implements MailReceiver {
         long overflow = 0;
         if (hasSubscribed != null)
             hasSubscribed.countDown();
+        logger.debug("redis:rpc:consumeList start");
         while (running) {
             List<String> result = RedisCtx.getRedisClient().blpop(1, consuming_name);
-            if (result == null || result.size() <= 0)
+            if (result == null || result.size() <= 0) {
                 continue;
+            }
 
             serverCount.incrementAndGet();
             String msg = result.get(1);
@@ -211,6 +212,7 @@ public class RedisServerMailReceiver implements MailReceiver {
     }
 
     private void consumePubSub() {
+        logger.debug("redis:rpc:consumePubSub start");
         pubsub = new JedisPubSub() {
             // over flow events currently
             private long overflow = 0;

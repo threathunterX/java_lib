@@ -66,9 +66,7 @@ public class RedisClientMailReceiver implements MailReceiver {
             public void run() {
                 while (running) {
                     try {
-                        logger.debug("start consume");
                         startConsume();
-                        logger.debug("exit consume");
                     } catch(Throwable e) {
                         if (e.getClass().equals(InterruptedException.class))
                             logger.error("redis:redis consume error, client id: " + clientid + " exception", e);
